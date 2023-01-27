@@ -11,8 +11,13 @@ namespace cw5.Controllers
     [ApiController]
     public class WarehousesController : ControllerBase
     {
+        private readonly IProductService _dbProducts;
+        public WarehousesController(IProductService dbProduct)
+        {
+            _dbProducts = dbProduct;
+        }
         [HttpPost]
-        public IActionResult Post([FromBody] Order value)
+        public IActionResult Post([FromBody] OrderDto value)
         {
             var context = new ProductService();
             try

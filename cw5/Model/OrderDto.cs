@@ -2,16 +2,15 @@
 
 namespace cw5.Model
 {
-    public class Order
+    public class OrderDto
     {
         [Required]
         public int IdProduct { get; set; }
         [Required]
-        public int IdOrder { get; set; }
+        public int IdWarehouse { get; set; }
         [Required]
         public int Amount { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
-        public DateTime? FullfilledAt { get; set; }
     }
 }

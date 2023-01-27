@@ -3,16 +3,78 @@ using System.Data.SqlClient;
 
 namespace cw5.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private const string ConString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=cw5;Trusted_Connection=True;";
 
-        public IEnumerable<Order> GetAnimals()
+        public int DeleteOrder(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Product> GetProduct(int id)
         {
             using SqlConnection con = new SqlConnection(ConString);
             using SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
-            cmd.CommandText = "select * from Animal";
+            cmd.CommandText = $"select * from Product where IdProduct={id}";
+
+            con.Open();
+
+            var dr = cmd.ExecuteReader();
+            var list = new List<Product>();
+            while (dr.Read())
+            {
+                list.Add(new Product
+                {
+                    IdProduct = (int)dr["IdProduct"],
+                    Name = (string)dr["Name"],
+                    Description = (string)dr["Description"],
+                    Price = (decimal)dr["Price"]
+                });
+            }
+            return list;
+        }
+
+        public IEnumerable<Warehouse> GetWarehouse(int id)
+        {
+            using SqlConnection con = new SqlConnection(ConString);
+            using SqlCommand cmd = new SqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = $"select * from Warehouse where IdWarehouse={id}";
+
+            con.Open();
+
+            var dr = cmd.ExecuteReader();
+            var list = new List<Warehouse>();
+            while (dr.Read())
+            {
+                list.Add(new Warehouse
+                {
+                    IdWarehouse = (int)dr["IdWarehouse"],
+                    Name = (string)dr["Name"],
+                    Address = (string)dr["Address"],
+                });
+            }
+            return list;
+        }
+
+        public int InsertOrder(OrderDto newOrder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int UpdateOrder(OrderDto value, int idOrder)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Order> IProductService.GetOrder(int id)
+        {
+            using SqlConnection con = new SqlConnection(ConString);
+            using SqlCommand cmd = new SqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = $"select * from Order where IdOrder={id}";
 
             con.Open();
 
@@ -22,13 +84,40 @@ namespace cw5.Services
             {
                 list.Add(new Order
                 {
-                    //IdAnimal = (int)dr["IdAnimal"],
-                    //Name = dr["Name"].ToString(),
+                    IdProduct = (int)dr["IdProduct"],
+                    IdOrder= (int)dr["IdOrder"],
+                    Amount= (int)dr["Amount"],
+                    CreatedAt=(DateTime)dr["CreatedAt"],
+                    FullfilledAt = (DateTime)dr["FulfilledAt"]
                 });
             }
-
             return list;
         }
+
+
+
+        //public IEnumerable<Order> GetProduct()
+        //{
+        //    using SqlConnection con = new SqlConnection(ConString);
+        //    using SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = con;
+        //    cmd.CommandText = "select * from Animal";
+
+        //    con.Open();
+
+        //    var dr = cmd.ExecuteReader();
+        //    var list = new List<Order>();
+        //    while (dr.Read())
+        //    {
+        //        list.Add(new Order
+        //        {
+        //            //IdAnimal = (int)dr["IdAnimal"],
+        //            //Name = dr["Name"].ToString(),
+        //        });
+        //    }
+
+        //    return list;
+        //}
 
         //public int InsertAnimal(Animal newAnimal)
         //{
